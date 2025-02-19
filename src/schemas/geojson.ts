@@ -102,6 +102,18 @@ const FeatureSchema = GeoJsonObjectSchema.extend({
   properties: GeoJsonPropertiesSchema,
 }) satisfies z.ZodType<GeoJSON.Feature>;
 
+// Feature Schema
+const ExtendedFeatureSchema = GeoJsonObjectSchema.extend({
+  type: z.literal("Feature"),
+  geometry: GeometrySchema,
+  id: z.union([z.string(), z.number()]).optional(),
+  properties: GeoJsonPropertiesSchema,
+  metadata: z.record(z.any()).optional(),
+  polylabel: z
+    .union([z.tuple([z.number(), z.number()]), z.array(z.number())])
+    .optional(),
+}) satisfies z.ZodType<ExtendedFeature>;
+
 // FeatureCollection Schema
 const FeatureCollectionSchema = GeoJsonObjectSchema.extend({
   type: z.literal("FeatureCollection"),
@@ -129,6 +141,7 @@ export {
   GeometrySchema,
   GeoJsonPropertiesSchema,
   FeatureSchema,
+  ExtendedFeatureSchema,
   FeatureCollectionSchema,
   GeoJSONSchema,
 };
