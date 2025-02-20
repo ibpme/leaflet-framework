@@ -92,11 +92,6 @@ interface EventOverlayConfig {
   hover: EventBehavior[];
 }
 
-type PopupFunction = (
-  data?: Record<string, V>,
-  options?: L.PopupOptions
-) => L.Popup | undefined;
-
 /*
  * Represents an overlay for a specific key on data
  * id : unique identifier for the overlay
@@ -118,8 +113,12 @@ interface LayerState {
 }
 
 // TODO : As seperate factory
-type ViewCallbackFactory<V> = () => (data: Record<string, V>) => void;
-type DrilldownCallbackFactory<V> = () => (drillDownKey: V) => void;
+type PopupFunction = (data?: Record<string, V>) => L.Popup | undefined;
+type PopupFunctionFactory<V> = (options: L.PopupOptions) => PopupFunction;
+type ViewCallback<V> = (data: Record<string, V>) => void;
+type DrilldownCallback<V> = (drillDownKey: V) => void;
+type ViewCallbackFactory<V> = () => ViewCallback;
+type DrilldownCallbackFactory<V> = () => DrilldownCallback;
 type IconFunctionGenerator<T> = (
   feature: ExtendedFeature,
   data?: Record<string, T>

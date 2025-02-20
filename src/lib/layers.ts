@@ -20,8 +20,8 @@ export function createMapLayer<T, V>(
     lockedOnId: null,
     filteredLayers: L.layerGroup(),
   },
-  viewCb: (data: Record<string, V>) => void = () => {},
-  drilldownCb: (drillDownKey: V) => void = () => {}
+  viewCb: ViewCallback<V> = () => {},
+  drilldownCb: DrilldownCallback<V> = () => {}
 ) {
   // Display Config Setup
   const lockedOn = config.displayConfig.lockedOn || {
@@ -121,9 +121,8 @@ export function createMapLayer<T, V>(
       if (!feature || !layer) return;
       const key = feature.properties[config.key];
 
-      // TODO : Create separate function for popup setup
       // Setup popup for all layers
-      const popup = popupFunction(feature, data.get(key));
+      const popup = popupFunction(data.get(key));
       popup && layer.bindPopup(popup);
 
       // Reset layer event listeners
